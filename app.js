@@ -11,7 +11,7 @@ function distDeck(numPlayers, deck) {
 
     for (i=0;i<deck.length;i++) {
 	// if we have dealt to all players, start over
-	if (playerDealt = numPlayers - 1) { var playerDealt = 0 }
+	if (playerDealt > numPlayers - 1) { var playerDealt = 0 }
 	playerHands[playerDealt].push(deck.shift())
 	
 	playerDealt++
