@@ -12,3 +12,8 @@ Specification
 * Left of Dealer is first player to act.
 * Each turn, (this) playerArray.pop to communityArray.
 * At end of each round, each value in communityArray is pushed to winning playerArray, then initialized to [].
+
+Dependencies
+-------------------
+
+* jQuery (building on [html5-boilerplate](http://html5boilerplate.com))
