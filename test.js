@@ -1,10 +1,7 @@
 var card = require('card.js');
-var player = require('player.js');
 
-
-var myHand = [4,2,6,3,13,11];
-
-var firstPlayer = new player.Player;
+//DECLARE NUMBER OF PLAYERS
+var numPlayers = 6;
 
 console.log('*****TESTING DEALING FUNCTION*****');
 var deck = [2,3,3,6,5,2,3,5,1,7,5,3,2,6,7,8,4,4,3,12,3,5,3,3,2,1,6];
@@ -12,16 +9,20 @@ var deck = [2,3,3,6,5,2,3,5,1,7,5,3,2,6,7,8,4,4,3,12,3,5,3,3,2,1,6];
 console.log('original deck = ' + deck);
 console.log('distributed deck... returned[0] = hands, returned[1] = remaining cards.');
 
-var start = card.Deal(5,deck);
+var start = card.Deal(deck,numPlayers);
 
-console.log(start);
+for (i=0;i<start[0].length;i++) 
+{
+    console.log('Player at position ' + i + '\'s hand is ' + start[0][i].hand);
+}
+
+console.log('Remaining Cards: ' + start[1]);
+
+///////////////////////////////////////////////////
 
 console.log('*****TESTING PLAYER OBJECT*****');
-//firstPlayer.hand.push(start[0][0]);
-for (i=0;i<start[0][0].length;i++)
-    {
-	firstPlayer.hand.push(start[0][0][i])
-    }
+
+var firstPlayer = start[0][0];
 
 console.log('player\'s hand initialized to ' + firstPlayer.hand);
 
