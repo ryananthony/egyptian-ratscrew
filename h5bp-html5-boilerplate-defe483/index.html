@@ -14,6 +14,7 @@
 
         <link rel="stylesheet" href="css/normalize.css">
         <link rel="stylesheet" href="css/main.css">
+	<link rel="stylesheet" href="css/ratscrew.css">
         <script src="js/vendor/modernizr-2.6.2.min.js"></script>
     </head>
     <body>
@@ -23,6 +24,14 @@
 
         <!-- Add your site or application content here -->
         <p>Hello world! This is HTML5 Boilerplate.</p>
+	
+	<div class="card">
+
+	  <p class="cardTop">7D</p>
+
+	  <p class="cardBottom">7D</p>
+
+	  </div>
 
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
         <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
@@ -36,5 +45,15 @@
             g.src='//www.google-analytics.com/ga.js';
             s.parentNode.insertBefore(g,s)}(document,'script'));
         </script>
+	<script>
+	  $(document).ready(function() 
+	  {
+	     var numPlayers = 0
+	     $('body').click(function() { 
+	        numPlayers = parseInt(prompt('How many players?'));
+	        $('p').append(numPlayers); 
+	     }); 
+	  });
+	</script>
     </body>
 </html>
