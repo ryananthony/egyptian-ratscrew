@@ -1,27 +1,37 @@
+
+.game {
+  background-color: blue;
+}
+
+
+.gameTable {
+  width: ;
+}
+
 .card {
-  border: 1px solid #000;
-  
-  width: 130px;
-  height: 200px;
+  background-color: #fdffdd;
+  border: 1px solid #000;  
+  width: 64px;
+  height: 100px;
   /* Rounded Corners  */
   -moz-border-radius: 6px;
   -webkit-border-radius: 6px;
   -khtml-border-radius: 6px;
   border-radius: 6px;
+  font-size: 1.2em;
 }
 
-.cardTop {
+.cardTop p {
   position:relative;
+  top: -24px;
+  padding: 4px 4px;
+  
+}
+
+.cardBottom p {
+  position: relative;
   top: 0px;
   padding: 4px 4px;
-  font-size: 1.6em;
-}
-
-.cardBottom {
-  position: relative;
-  top: 110px;
-  padding: 4px 4px;
-  font-size: 1.6em;
   -webkit-transform:rotate(-180deg);
   -moz-transform:rotate(-180deg); 
   -o-transform:rotate(-180deg); 
