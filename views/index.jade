@@ -1,42 +1,91 @@
 extends layout
 
 block index
-	.container(data-role="content",data-theme="e")
+	- var topPile = pile.shift()
+	- var topCard = hand.shift()
+	script
+		ajax = []
+		ajax.push('#{topPile}')
+		ajax.push('#{topCard}')
+	div#game(data-role="content",data-theme="e")
 		.ui-grid-d
 			.ui-block-a
 			.ui-block-b
 			.ui-block-c
-				p Player 3
+				p.opponent Player 3
 			.ui-block-d
 			.ui-block-e
 		.ui-grid-d
 			.ui-block-a
 			.ui-block-b
-				p Player 2
+				p.opponent Player 2
 			.ui-block-c
 			.ui-block-d
-				p Player 4
+				p.opponent Player 4
 			.ui-block-e
-		.ui-grid-d
-			.ui-block-a
-				p Player 1
-			.ui-block-b
-			.ui-block-c
-			.ui-block-d
-			.ui-block-e
-				p Player 5
 		.ui-grid-d
 			.ui-block-a
 			.ui-block-b
 			.ui-block-c
-				.card
-					.cardTop
-						p 7
-					.cardBottom
-						p 7
+				.pile
+					
+					- if (topPile.substring(0,topPile.length - 1) == '11') {
+					-	  topPile = 'J' + topPile.substring(topPile.length - 1,topPile.length)
+					-	}
+					- if (topPile.substring(0,topPile.length - 1) == '12') {
+					-	  topPile = 'Q' + topPile.substring(topPile.length - 1,topPile.length)
+					-	}
+					- if (topPile.substring(0,topPile.length - 1) == '13') {
+					-	  topPile = 'K' + topPile.substring(topPile.length - 1,topPile.length)
+					-	}
+					- if (topPile.substring(0,topPile.length - 1) == '1') {
+					-	  topPile = 'A' + topPile.substring(topPile.length - 1,topPile.length)
+					-	}
+					- //console.log(topPile)
+					.pileTop
+						case topPile.substring(topPile.length - 1,topPile.length)
+							when 'S'
+								p #{topPile.substring(0,topPile.length - 1)}&spades;
+							when 'H'
+								p #{topPile.substring(0,topPile.length - 1)}&hearts;
+							when 'C'
+								p #{topPile.substring(0,topPile.length - 1)}&clubs;
+							when 'D'
+								p #{topPile.substring(0,topPile.length - 1)}&diams;
+							when 'J'
+								p 
+									strong J																			
+					.pileBottom
+						case topPile.substring(topPile.length - 1,topPile.length)
+							when 'S'
+								p #{topPile.substring(0,topPile.length - 1)}&spades;
+							when 'H'
+								p #{topPile.substring(0,topPile.length - 1)}&hearts;
+							when 'C'
+								p #{topPile.substring(0,topPile.length - 1)}&clubs;
+							when 'D'
+								p #{topPile.substring(0,topPile.length - 1)}&diams;
+							when 'J'
+								p 
+									strong J
 			.ui-block-d
 			.ui-block-e
-	.container(data-role="content",data-theme="e")
+		.ui-grid-d
+			.ui-block-a
+				p.opponent Player 1
+			.ui-block-b
+			.ui-block-c
+			.ui-block-d
+			.ui-block-e
+				p.opponent Player 5
+		.ui-grid-d
+			.ui-block-a
+			.ui-block-b
+			.ui-block-c
+				.faceDownCard
+			.ui-block-d
+			.ui-block-e
+	div#container(data-role="content",data-theme="e")
 		.ui-grid-a
 			.ui-block-a
 				h3 HISTORY REPEATS ITSELF
