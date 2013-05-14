@@ -1,5 +1,20 @@
 
 
+#logContainer {
+  overflow: hidden;
+  max-height:170px;
+}
+
+#gameLog {
+  max-height: 120px;
+  height:100px;
+  font-size: 1.2em;
+  line-height: 1px;
+  border: 1px solid #ddd;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
 
 #game {
   background-color: blue;

@@ -19,9 +19,10 @@ html
 			div(data-role="content",data-theme="e")
 				form
 					label(for="slider-0") How many Opponents?
-					input(type="range",name="slider",id="slider-0",value="2",min="1",max="5")
+					input(type="range",name="numOpponents",id="slider-0",value="2",min="1",max="5")
 					p
-						a(href="#game",data-role="button",data-icon="star") Let's Play!
+						a(id="startButton",href="#game",data-role="button",data-icon="star",action='/',method='POST') Let's Play!
+		- console.log('something')
 		.container(data-role="page",id="game")
 			div(data-role="header",data-theme="e") 
 				h1 EGYPTIAN RATSCREW

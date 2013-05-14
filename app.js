@@ -8,15 +8,14 @@ var express = require('express')
   , user = require('./routes/user')
   , turn = require('./routes/turn')
   , http = require('http')
+  , fs = require('fs')
   , path = require('path')
   , player = require('player')
   , card = require('card');
 
 var app = express();
 
-var init = function() {
-
-}
+global.fs = fs
 
 // all environments
 app.set('port', process.env.PORT || 3000);
@@ -36,55 +35,58 @@ if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
 
-app.get('/', function(req,res,next) {
-	// if user just hit the site, need to get value of numPlayers
-	var players = new Array(4) //need to set this to value from init site
+// the landing page where we get number of opponents
+app.get('/', routes.index);
+
+// where we initialize a new game
+app.post('/', function(req,res,next) {
+	
+				//console.log(req.body)
+
+	// number of opponents chosen becomes size of players array + real player
+	var players = new Array(parseInt(req.body.numOpponents) + 1)
 	var pile = []
+
+				//console.log('players size: ' + players.length)
 
 	for (i=0;i<players.length;i++) {
 		players[i] = new player.Player;
 	}
 
-	//console.log(players)
-
-	//console.log(card.CreateDeck(1,1))
+	// create single deck, WITH jokers
 	var deck = card.CreateDeck(1,1)
-
+	// shuffle deck with Josh's shuffle function
 	card.Shuffle(deck)
 	
+	// deal the deck to the players, returns dealt players and the remaining cards
 	var deal = card.Deal(players,deck)
-
 	players = deal[0]
 	pile = deal[1]
 
-	//debugging
-	// 	for (i=0;i<players.length;i++) 
-	// 	{
-	// 	    console.log('Player at position ' + i + '\'s hand is ' + players[i].hand);
-	// 	}
+	//initilize the real player
+	res.locals.player = players[0]
 
-	// console.log(pile)
+	//initize array of the opponents
+	res.locals.opponents = []
+	for (i=1;i<players.length;i++) {
+		res.locals.opponents.push(players[i])
+	}
 
-	// end debugging
-
-	//function init;
-	res.locals.hand = players[0].hand
+	//initialize the starting pile
 	res.locals.pile = pile
-    //console.log(req.body)
 
-    next()
-} ,routes.index);
+  next()
+} ,routes.begin);
 
 
 app.post('/turn', function(req,res,next) {
-	console.log(req.body)
-	console.log(res.locals.hand)
-	res.locals.hand = ['03H','06S','11C']
-	//res.locals.pile.card.Flip(topCard)
-	res.locals.pile = ['03H','06S']
-    //console.log(req.body)
-    next()
-} ,turn.turn);
+	if (req.body.action == 'dropped') {
+
+	}
+	res.locals.hand = req.body.hand
+	res.locals.pile = req.body.pile
+	next()
+}, turn.index);
 
 
 app.get('/users', user.list);

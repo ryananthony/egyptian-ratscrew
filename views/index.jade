@@ -1,12 +1,6 @@
 extends layout
 
 block index
-	- var topPile = pile.shift()
-	- var topCard = hand.shift()
-	script
-		ajax = []
-		ajax.push('#{topPile}')
-		ajax.push('#{topCard}')
 	div#game(data-role="content",data-theme="e")
 		.ui-grid-d
 			.ui-block-a
@@ -28,46 +22,12 @@ block index
 			.ui-block-b
 			.ui-block-c
 				.pile
-					
-					- if (topPile.substring(0,topPile.length - 1) == '11') {
-					-	  topPile = 'J' + topPile.substring(topPile.length - 1,topPile.length)
-					-	}
-					- if (topPile.substring(0,topPile.length - 1) == '12') {
-					-	  topPile = 'Q' + topPile.substring(topPile.length - 1,topPile.length)
-					-	}
-					- if (topPile.substring(0,topPile.length - 1) == '13') {
-					-	  topPile = 'K' + topPile.substring(topPile.length - 1,topPile.length)
-					-	}
-					- if (topPile.substring(0,topPile.length - 1) == '1') {
-					-	  topPile = 'A' + topPile.substring(topPile.length - 1,topPile.length)
-					-	}
-					- //console.log(topPile)
 					.pileTop
-						case topPile.substring(topPile.length - 1,topPile.length)
-							when 'S'
-								p #{topPile.substring(0,topPile.length - 1)}&spades;
-							when 'H'
-								p #{topPile.substring(0,topPile.length - 1)}&hearts;
-							when 'C'
-								p #{topPile.substring(0,topPile.length - 1)}&clubs;
-							when 'D'
-								p #{topPile.substring(0,topPile.length - 1)}&diams;
-							when 'J'
-								p 
-									strong J																			
+						p
+						- //JQUERY HERE																	
 					.pileBottom
-						case topPile.substring(topPile.length - 1,topPile.length)
-							when 'S'
-								p #{topPile.substring(0,topPile.length - 1)}&spades;
-							when 'H'
-								p #{topPile.substring(0,topPile.length - 1)}&hearts;
-							when 'C'
-								p #{topPile.substring(0,topPile.length - 1)}&clubs;
-							when 'D'
-								p #{topPile.substring(0,topPile.length - 1)}&diams;
-							when 'J'
-								p 
-									strong J
+						p
+						- //JQUERY HERE
 			.ui-block-d
 			.ui-block-e
 		.ui-grid-d
@@ -87,10 +47,10 @@ block index
 			.ui-block-e
 	div#container(data-role="content",data-theme="e")
 		.ui-grid-a
-			.ui-block-a
+			div#logContainer.ui-block-a
 				h3 HISTORY REPEATS ITSELF
-				p Anck-su-namun plays 3 of Hearts.
-				p Esmerelda gives you 4 chances...
+				div#gameLog
+					- //JQUERY HERE
 			.ui-block-b(data-role="content",data-theme="a")
 				center
 					h2 Best Times
