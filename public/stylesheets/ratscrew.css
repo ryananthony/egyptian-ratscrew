@@ -1,20 +1,23 @@
 
 
+
 #logContainer {
   overflow: hidden;
   max-height:170px;
 }
 
 #gameLog {
-  max-height: 120px;
+  max-height: 110px;
   height:100px;
   font-size: 1.2em;
   line-height: 1px;
-  border: 1px solid #ddd;
   overflow-x: hidden;
-  overflow-y: scroll;
+  /*overflow-y: scroll;*/
 }
 
+#pileStatus {
+  padding: 4px;
+}
 
 #game {
   background-color: blue;
@@ -35,7 +38,7 @@
 
 
 .pile {
-  background-color: #fdffdd;
+  background-color: #999900;
   border: 1px solid #000;  
   width: 64px;
   height: 100px;

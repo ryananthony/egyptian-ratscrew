@@ -19,7 +19,7 @@ exports.index = function(req, res){
 	    }
 		});
 
-	  res.end(playedCard) //jquery now replaces value of card
+	  res.send({ name : gameJsonBuffer.player.name, pile : playedCard }) //jquery now replaces value of card
 	})
 
 

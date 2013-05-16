@@ -1,43 +1,27 @@
 $(document).ready(function() {
 
   $('#startButton').click(function() {
-    $.post("/", $('form').serialize(), function(cardValue) {
+    $.post("/", $('form').serialize(), function(ajaxResponse) {
 
-          if (cardValue.substring(0,cardValue.length - 1) == '11') {
-            cardValue = 'J' + cardValue.substring(cardValue.length - 1,cardValue.length)
-          }
-          if (cardValue.substring(0,cardValue.length - 1) == '12') {
-            cardValue = 'Q' + cardValue.substring(cardValue.length - 1,cardValue.length)
-          }
-          if (cardValue.substring(0,cardValue.length - 1) == '13') {
-            cardValue = 'K' + cardValue.substring(cardValue.length - 1,cardValue.length)
-          }
-          if (cardValue.substring(0,cardValue.length - 1) == '1') {
-            cardValue = 'A' + cardValue.substring(cardValue.length - 1,cardValue.length)
-          }
-          if (cardValue.substring(0,cardValue.length - 1) == '14' ||
-              cardValue.substring(0,cardValue.length - 1) == '15') {
-            cardValue = 'J'
-          }
+      if (typeof ajaxResponse.pile !== 'undefined')
+      {
+        $('#pileStatus > h2').html('Current<br/>Pile Size: ' + ajaxResponse.pile.length);
+        console.log('The pile has ' + ajaxResponse.pile.length + ' cards currently.')
 
-          switch(cardValue.substring(cardValue.length - 1,cardValue.length))
-          {
-            case 'S':
-              cardValue = cardValue.substring(0,cardValue.length - 1) + '&spades;'
-              break
-            case 'H':
-              cardValue = cardValue.substring(0,cardValue.length - 1) + '&hearts;'
-              break
-            case 'C':
-              cardValue = cardValue.substring(0,cardValue.length - 1) + '&clubs;'
-              break
-            case 'D':
-              cardValue = cardValue.substring(0,cardValue.length - 1) + '&diams;'
-              break
-          }
+        //$('.pile').css("background-color","yellow");
+      }
 
-      $('.pileTop > p').html(cardValue);
-      $('.pileBottom > p').html(cardValue);
+      
+      // setInterval(function() {
+        
+      //   window.location.reload(true)
+      // }, 50000);
+
+
+      // if (typeof ajaxResponse.pile == 'undefined')
+      // {
+      //   $('.pile').css("background-color","yellow");
+      // }
     });
   })
 
@@ -51,46 +35,48 @@ $(document).ready(function() {
         // be sure it's in Game Pile boundary
         
         // send topCard thru ajax - server will 'flip' to 'pile'
-        $.post("/turn", {action:"dropped"}, function(cardValue) {
-          if (cardValue.substring(0,cardValue.length - 1) == '11') {
-            cardValue = 'J' + cardValue.substring(cardValue.length - 1,cardValue.length)
+        $.post("/turn", {action:"dropped"}, function(ajaxResponse) {
+          console.log('turn: ' + ajaxResponse.pile)
+          if (ajaxResponse.pile.substring(0,ajaxResponse.pile.length - 1) == '11') {
+            ajaxResponse.pile = 'J' + ajaxResponse.pile.substring(ajaxResponse.pile.length - 1,ajaxResponse.pile.length)
           }
-          if (cardValue.substring(0,cardValue.length - 1) == '12') {
-            cardValue = 'Q' + cardValue.substring(cardValue.length - 1,cardValue.length)
+          if (ajaxResponse.pile.substring(0,ajaxResponse.pile.length - 1) == '12') {
+            ajaxResponse.pile = 'Q' + ajaxResponse.pile.substring(ajaxResponse.pile.length - 1,ajaxResponse.pile.length)
           }
-          if (cardValue.substring(0,cardValue.length - 1) == '13') {
-            cardValue = 'K' + cardValue.substring(cardValue.length - 1,cardValue.length)
+          if (ajaxResponse.pile.substring(0,ajaxResponse.pile.length - 1) == '13') {
+            ajaxResponse.pile = 'K' + ajaxResponse.pile.substring(ajaxResponse.pile.length - 1,ajaxResponse.pile.length)
           }
-          if (cardValue.substring(0,cardValue.length - 1) == '1') {
-            cardValue = 'A' + cardValue.substring(cardValue.length - 1,cardValue.length)
+          if (ajaxResponse.pile.substring(0,ajaxResponse.pile.length - 1) == '1') {
+            ajaxResponse.pile = 'A' + ajaxResponse.pile.substring(ajaxResponse.pile.length - 1,ajaxResponse.pile.length)
           }
-          if (cardValue.substring(0,cardValue.length - 1) == '14' ||
-              cardValue.substring(0,cardValue.length - 1) == '15') {
-            cardValue = 'J'
+          if (ajaxResponse.pile.substring(0,ajaxResponse.pile.length - 1) == '14' ||
+              ajaxResponse.pile.substring(0,ajaxResponse.pile.length - 1) == '15') {
+            ajaxResponse.pile = 'J'
           }
 
-          switch(cardValue.substring(cardValue.length - 1,cardValue.length))
+          switch(ajaxResponse.pile.substring(ajaxResponse.pile.length - 1,ajaxResponse.pile.length))
           {
             case 'S':
-              cardValue = cardValue.substring(0,cardValue.length - 1) + '&spades;'
+              ajaxResponse.pile = ajaxResponse.pile.substring(0,ajaxResponse.pile.length - 1) + '&spades;'
               break
             case 'H':
-              cardValue = cardValue.substring(0,cardValue.length - 1) + '&hearts;'
+              ajaxResponse.pile = ajaxResponse.pile.substring(0,ajaxResponse.pile.length - 1) + '&hearts;'
               break
             case 'C':
-              cardValue = cardValue.substring(0,cardValue.length - 1) + '&clubs;'
+              ajaxResponse.pile = ajaxResponse.pile.substring(0,ajaxResponse.pile.length - 1) + '&clubs;'
               break
             case 'D':
-              cardValue = cardValue.substring(0,cardValue.length - 1) + '&diams;'
+              ajaxResponse.pile = ajaxResponse.pile.substring(0,ajaxResponse.pile.length - 1) + '&diams;'
               break
             // case 'J':
-            //   cardValue = '<strong>J</strong>'
+            //   ajaxResponse.pile = '<strong>J</strong>'
           }
 
-            console.log(cardValue)
-            $('.pileTop > p').html(cardValue);
-            $('.pileBottom > p').html(cardValue);
-            $('#gameLog').prepend('<p>Player flipped the ' + cardValue + '.')
+            //console.log(ajaxResponse.pile)
+            $('.pile').css("background-color","#fdffdd");
+            $('.pileTop > p').html(ajaxResponse.pile);
+            $('.pileBottom > p').html(ajaxResponse.pile);
+            $('#gameLog').prepend('<p>Player flipped the ' + ajaxResponse.pile + '.')
 
 
           });

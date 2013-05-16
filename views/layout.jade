@@ -5,29 +5,37 @@ html
 		title Egyptian Ratscrew
 		script(src='/javascripts/jquery-1.9.1.min.js')
 		- //http://code.jquery.com/jquery-1.9.1.js
-		script(src='/javascripts/jquery.mobile-1.3.1.min.js')
 		script(src='http://code.jquery.com/ui/1.10.3/jquery-ui.js')
 		script(src='/javascripts/jquery.ui.touch-punch.min.js')
+		script(src='/javascripts/jquery.mobile-1.3.1.min.js')
 		script(src='/javascripts/ratscrew.js')
-		link(rel='stylesheet', href='/stylesheets/ratscrew.css')
-		link(rel='stylesheet', href='/stylesheets/jquery.mobile-1.3.1.min.css')
 		link(rel='stylesheet',src='http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css')
+		link(rel='stylesheet', href='/stylesheets/jquery.mobile-1.3.1.min.css')
+		link(rel='stylesheet', href='/stylesheets/ratscrew.css')
 	body
 		.container(data-role="page",id="prompt")
 			div(data-role="header",data-theme="e") 
 				h1 ALMOST READY...
 			div(data-role="content",data-theme="e")
-				form
-					label(for="slider-0") How many Opponents?
-					input(type="range",name="numOpponents",id="slider-0",value="2",min="1",max="5")
+				form#begin
+					label(for="name") Name: 
+					input(type="text",name="name",id="name")
+					.ui-grid-a
+						.ui-block-a
+							label(for="jokers") Jokers? 
+							select(name="jokers",id="jokersFlip",data-role="slider")
+								option(value="0") Off
+								option(value="1") On
+						.ui-block-b
+							label(for="slider-0") How many Opponents? 
+							input(type="range",name="numOpponents",id="slider-0",value="3",min="1",max="5",data-highlight="true",data-theme="e")
 					p
 						a(id="startButton",href="#game",data-role="button",data-icon="star",action='/',method='POST') Let's Play!
-		- console.log('something')
+		- console.log('so the layout refreshes')
 		.container(data-role="page",id="game")
 			div(data-role="header",data-theme="e") 
 				h1 EGYPTIAN RATSCREW
 			block index
-			- //console.log('test')
 			div(data-role="footer")
 				center
 					p Copyright 2013 - Barely-able-to-code dot com.

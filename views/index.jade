@@ -6,38 +6,57 @@ block index
 			.ui-block-a
 			.ui-block-b
 			.ui-block-c
-				p.opponent Player 3
+				if opponents[2]
+					p.opponent #{opponents[2].name}
+				else
+					p.opponent Empty Seat
 			.ui-block-d
 			.ui-block-e
 		.ui-grid-d
 			.ui-block-a
 			.ui-block-b
-				p.opponent Player 2
+				if opponents[1]
+					p.opponent #{opponents[1].name}
+				else
+					p.opponent Empty Seat
 			.ui-block-c
+				div#pileStatus
+					h2
+					- //JQUERY HERE
 			.ui-block-d
-				p.opponent Player 4
+				if opponents[3]
+					p.opponent #{opponents[3].name}
+				else
+					p.opponent Empty Seat
 			.ui-block-e
 		.ui-grid-d
 			.ui-block-a
 			.ui-block-b
 			.ui-block-c
-				.pile
-					.pileTop
-						p
-						- //JQUERY HERE																	
-					.pileBottom
-						p
-						- //JQUERY HERE
+					- console.log('so the index refreshes')
+					.pile
+						.pileTop
+							p
+							- //JQUERY HERE																	
+						.pileBottom
+							p
+							- //JQUERY HERE
 			.ui-block-d
 			.ui-block-e
 		.ui-grid-d
 			.ui-block-a
-				p.opponent Player 1
+				if opponents[0]
+					p.opponent #{opponents[0].name}
+				else
+					p.opponent Empty Seat
 			.ui-block-b
 			.ui-block-c
 			.ui-block-d
 			.ui-block-e
-				p.opponent Player 5
+				if opponents[4]
+					p.opponent #{opponents[4].name}
+				else
+					p.opponent Empty Seat
 		.ui-grid-d
 			.ui-block-a
 			.ui-block-b
@@ -50,7 +69,6 @@ block index
 			div#logContainer.ui-block-a
 				h3 HISTORY REPEATS ITSELF
 				div#gameLog
-					- //JQUERY HERE
 			.ui-block-b(data-role="content",data-theme="a")
 				center
 					h2 Best Times

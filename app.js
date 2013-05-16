@@ -41,7 +41,7 @@ app.get('/', routes.index);
 // where we initialize a new game
 app.post('/', function(req,res,next) {
 	
-				//console.log(req.body)
+				console.log(req.body)
 
 	// number of opponents chosen becomes size of players array + real player
 	var players = new Array(parseInt(req.body.numOpponents) + 1)
@@ -53,8 +53,14 @@ app.post('/', function(req,res,next) {
 		players[i] = new player.Player;
 	}
 
+	if (req.body.name) {
+		players[0].name = req.body.name;
+	} else {
+		players[0].name = 'Player';
+	}
+
 	// create single deck, WITH jokers
-	var deck = card.CreateDeck(1,1)
+	var deck = card.CreateDeck(1,parseInt(req.body.jokers))
 	// shuffle deck with Josh's shuffle function
 	card.Shuffle(deck)
 	
@@ -62,6 +68,7 @@ app.post('/', function(req,res,next) {
 	var deal = card.Deal(players,deck)
 	players = deal[0]
 	pile = deal[1]
+	res.locals.pile = pile
 
 	//initilize the real player
 	res.locals.player = players[0]
@@ -72,10 +79,33 @@ app.post('/', function(req,res,next) {
 		res.locals.opponents.push(players[i])
 	}
 
-	//initialize the starting pile
-	res.locals.pile = pile
+	fs.readFile('./appdata/egyptian.txt', function(err, data){
+    if (err) {
+    	console.log('could not open Egyptian Names file')
+    }
 
-  next()
+    var dataString = data.toString();
+    var lines = dataString.split('\n');
+    
+    //for loop on opponents array
+    for (var opponent in res.locals.opponents) {
+    	res.locals.opponents[opponent].name = lines[Math.floor(Math.random()*lines.length)];
+    }
+    
+		console.log(res.locals.opponents[0].name)
+
+		//getOpponentsName(res.locals.opponents);
+
+		//initialize the starting pile
+		
+
+		console.log(res.locals.opponents[0].name)
+
+		next() //this ouside the readFile results in undefined opponent names
+
+	});
+
+  
 } ,routes.begin);
 
 
