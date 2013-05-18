@@ -37,6 +37,15 @@ if ('development' == app.get('env')) {
 // the landing page where we get number of opponents
 app.get('/', routes.index);
 
+//where we render the new game w/ our settings
+app.get('/:action', function(req,res,next) {
+	console.log(req.params)
+	if (req.params.action == 'render') {
+		res.locals.render = true;
+	}
+	next()
+}, routes.index);
+
 // where we initialize a new game
 app.post('/', function(req,res,next) {
 	
@@ -49,7 +58,7 @@ app.post('/', function(req,res,next) {
 				//console.log('players size: ' + players.length)
 
 	for (i=0;i<players.length;i++) {
-		players[i] = new player.Player;
+		players[i] = new player.Opponent;
 	}
 
 	if (req.body.name) {
@@ -65,17 +74,17 @@ app.post('/', function(req,res,next) {
 	
 	// deal the deck to the players, returns dealt players and the remaining cards
 	var deal = card.Deal(players,deck)
-	players = deal[0]
+	allPlayers = deal[0]
 	pile = deal[1]
 	res.locals.pile = pile
 
 	//initilize the real player
-	res.locals.player = players[0]
+	res.locals.player = allPlayers[0]
 
 	//initize array of the opponents
 	res.locals.opponents = []
-	for (i=1;i<players.length;i++) {
-		res.locals.opponents.push(players[i])
+	for (i=1;i<allPlayers.length;i++) {
+		res.locals.opponents.push(allPlayers[i])
 	}
 
 	fs.readFile('./appdata/egyptian.txt', function(err, data){
@@ -88,18 +97,32 @@ app.post('/', function(req,res,next) {
     
     //for loop on opponents array
     for (var opponent in res.locals.opponents) {
-    	res.locals.opponents[opponent].name = lines[Math.floor(Math.random()*lines.length)];
+    	   	
+    	var confirmedUnique = '';
+
+    	while (confirmedUnique == '') 
+    	{
+	    	// check we didn't already use name
+	    	var nameCandidate = lines[Math.floor(Math.random()*lines.length)];
+
+	    	for (index in res.locals.opponents) {
+	    		if (res.locals.opponents[index].name == nameCandidate) 
+	    		{
+	    			console.log(nameCandidate + ' already used, getting next random name')
+	    			break;
+	    		}
+	    		else
+	    		{
+	    			confirmedUnique = nameCandidate;
+	    		}
+	    	}
+
+    	} //end while loop
+
+    	res.locals.opponents[opponent].name = confirmedUnique;
+    	
     }
     
-		console.log(res.locals.opponents[0].name)
-
-		//getOpponentsName(res.locals.opponents);
-
-		//initialize the starting pile
-		
-
-		console.log(res.locals.opponents[0].name)
-
 		next() //this ouside the readFile results in undefined opponent names
 
 	});
@@ -111,7 +134,7 @@ app.post('/', function(req,res,next) {
 app.post('/turn', function(req,res,next) {
 	console.log(req.body)
 	if (req.body.turn == 'opponent') {
-		res.locals.opponentName = req.body.name
+		res.locals.opponentName = req.body.name;
 	}
 	res.locals.hand = req.body.hand
 	res.locals.pile = req.body.pile

@@ -14,28 +14,69 @@ html
 		link(rel='stylesheet', href='/stylesheets/ratscrew.css')
 	body
 		.container(data-role="page",id="prompt")
-			div(data-role="header",data-theme="e") 
-				h1 ALMOST READY...
-			div(data-role="content",data-theme="e")
-				form#begin
-					label(for="name") Name: 
-					input(type="text",name="name",id="name")
-					.ui-grid-a
-						.ui-block-a
-							label(for="jokers") Jokers? 
-							select(name="jokers",id="jokersFlip",data-role="slider")
-								option(value="0") Off
-								option(value="1") On
-						.ui-block-b
-							label(for="slider-0") How many Opponents? 
-							input(type="range",name="numOpponents",id="slider-0",value="3",min="1",max="5",data-highlight="true",data-theme="e")
-					p
-						a(id="startButton",href="#game",data-role="button",data-icon="star",action='/',method='POST') Let's Play!
+			block index
 		- console.log('so the layout refreshes')
 		.container(data-role="page",id="game")
 			div(data-role="header",data-theme="e") 
 				h1 EGYPTIAN RATSCREW
-			block index
-			div(data-role="footer")
-				center
-					p Copyright 2013 - Barely-able-to-code dot com.
+			div#gameArea(data-role="content",data-theme="e")
+				block game
+			div#container(data-role="content",data-theme="e")
+				.ui-grid-a
+					div#logContainer.ui-block-a
+						h3 HISTORY REPEATS ITSELF
+						div#gameLog
+					.ui-block-b(data-role="content",data-theme="a")
+						center
+							h2 Best Times
+						table
+							thead
+								tr
+									th NAME
+									th TIME
+							tbody
+								tr
+									td JIM
+									td 1:54
+								tr
+									td MARK
+									td 1:59
+								tr
+									td SALLY
+									td 2:06
+				.ui-grid-a
+					.ui-block-a
+						table
+							thead
+								tr
+									th 
+										h2 TIME
+									th 
+										h2 POINTS
+							tbody
+								tr
+									td 
+										h3 2:24
+									td 
+										h3 94
+					.ui-block-b(data-role="content",data-theme="a")
+						center
+							h2 Most Points
+						table
+							thead
+								tr
+									th NAME
+									th POINTS
+							tbody
+								tr
+									td JIM
+									td 112
+								tr
+									td SALLY
+									td 108
+								tr
+									td GEORGE
+									td 95
+		div(data-role="footer")
+			center
+				p Copyright 2013 - Barely-able-to-code dot com.

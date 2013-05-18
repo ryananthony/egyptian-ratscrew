@@ -3,36 +3,34 @@
  * GET home page.
  */
 
-exports.index = function(req, res){ // landing - gets numPlayers
+exports.index = function(req, res){ 
 
-fs.exists('./gamedata/game.json', function(exists) {
-  if (exists) 
-  {
+	// initial get request with our vars
 	global.fs.readFile('./gamedata/game.json', function (err,gameData) {
 		if (err) { console.log('fail') }
+			
+		var gameJsonBuffer = JSON.parse(gameData);
 
-		var gameJsonBuffer = JSON.parse(gameData)
-
-		// for the window.reload event after ajax submission
-		res.render('index', { 
-			title: 'Ratscrew',
-			opponents: gameJsonBuffer.opponents,
-			name : gameJsonBuffer.player.name, 
-			exposedCard : gameJsonBuffer.pile[0]
-		});
+		if (res.locals.render == true) { 
+			console.log('hit start block')
+			res.render('index', { 
+				title: 'Ratscrew',
+				opponents: gameJsonBuffer.opponents,
+				name : gameJsonBuffer.player.name, 
+				exposedCard : gameJsonBuffer.pile[0]
+			});
+			res.end();
+		}
+		else  // landing - gets numPlayers
+		{
+			res.render('index', { 
+				title: 'Ratscrew',
+				opponents: [],
+				exposedCard: []
+			});
+		}
 	})
-  } 
-  else // the initial load for setting game options
-  {
-		res.render('index', { 
-			title: 'Ratscrew',
-			opponents: [],
-			exposedCard: []
-		});
-  }
-});
-
-};
+}
 
 exports.begin = function(req, res){
 	//console.log('at route: ' + res.locals.opponents[0].name)
@@ -50,7 +48,20 @@ exports.begin = function(req, res){
     }
 	});
 
+	//make array of opponent names for tracking who's turn it is
+	var opponentNames = []
+	for (var opp in gameData.opponents) {
+		opponentNames.push(gameData.opponents[opp].name);
+	}
+
+
+	res.render('game', { 
+		title: 'Ratscrew',
+		opponents: gameData.opponents,
+		name : gameData.player.name, 
+		exposedCard : gameData.pile[0]
+	});
 	// conditional based on player name sent from jQuery
-	res.send({ name : gameData.player.name, exposedCard : gameData.pile[0] }) //jquery now replaces value of card
+	//res.send({ name : gameData.player.name, opponents: opponentNames, exposedCard : gameData.pile[0] }) //jquery now replaces value of card
 
 };
