@@ -1,12 +1,84 @@
 $(document).ready(function() {
 
+  /***************************************
+  *********** helper functions ***********
+  ***************************************/
+
+  function displayTopCard(cardString) {
+    if (cardString.substring(0,cardString.length - 1) == '11') 
+    {
+      cardString = 'J' + cardString.substring(cardString.length - 1,cardString.length)
+    }
+    if (cardString.substring(0,cardString.length - 1) == '12') {
+      cardString = 'Q' + cardString.substring(cardString.length - 1,cardString.length)
+    }
+    if (cardString.substring(0,cardString.length - 1) == '13') {
+      cardString = 'K' + cardString.substring(cardString.length - 1,cardString.length)
+    }
+    if (cardString.substring(0,cardString.length - 1) == '1') {
+      cardString = 'A' + cardString.substring(cardString.length - 1,cardString.length)
+    }
+    if (cardString.substring(0,cardString.length - 1) == '14' ||
+        cardString.substring(0,cardString.length - 1) == '15') {
+      cardString = 'J'
+    }
+
+    switch(cardString.substring(cardString.length - 1,cardString.length))
+    {
+      case 'S':
+        cardString = cardString.substring(0,cardString.length - 1) + '&spades;'
+        break
+      case 'H':
+        cardString = cardString.substring(0,cardString.length - 1) + '&hearts;'
+        break
+      case 'C':
+        cardString = cardString.substring(0,cardString.length - 1) + '&clubs;'
+        break
+      case 'D':
+        cardString = cardString.substring(0,cardString.length - 1) + '&diams;'
+        break
+    }
+
+    return cardString;
+  }
+
+  function opponentsTurn (opponentNamesArray) {
+    setTimeout(function() {
+      if (opponentNamesArray[0]) //recursive base case, if first position exists...
+      {
+        $.post("/turn", {turn:"opponent",name:opponentNamesArray[0]}, function(ajaxResponse) {
+          ajaxResponse.exposedCard = displayTopCard(ajaxResponse.exposedCard)
+          //console.log(ajaxResponse.pile)
+          $('.pile').css("background-color","#fdffdd");
+          $('.pileTop > p').html(ajaxResponse.exposedCard);
+          $('.pileBottom > p').html(ajaxResponse.exposedCard);
+          $('#gameLog').prepend('<p>Opponent flipped the ' + ajaxResponse.exposedCard + '.')
+          $('#' + opponentNamesArray[0]).css("background-color","red");
+          opponentNamesArray.shift()
+          opponentsTurn(opponentNamesArray);
+          console.log(opponentNamesArray)
+        });  
+      } 
+        else 
+      {
+        alert('player\'s turn')
+        return false
+        // fill a div indicating player's turn again
+      }
+    }, 1000)// end of timeout
+  } // end of opponentsTurn function
+
+   /***************************************
+    ************* jQuery calls ************
+    **************************************/ 
+
   $('#startButton').click(function() {
     $.post("/", $('form').serialize(), function(ajaxResponse) {
 
-      if (typeof ajaxResponse.pile !== 'undefined')
+      if (typeof ajaxResponse.exposedCard !== 'undefined')
       {
-        $('#pileStatus > h2').html('Current<br/>Pile Size: ' + ajaxResponse.pile.length);
-        console.log('The pile has ' + ajaxResponse.pile.length + ' cards currently.')
+        $('#pileStatus > h2').html('Current<br/>Pile Size: ' + ajaxResponse.exposedCard.length);
+        console.log('The exposedCard has ' + ajaxResponse.exposedCard.length + ' cards currently.')
 
         //$('.pile').css("background-color","yellow");
       }
@@ -25,6 +97,9 @@ $(document).ready(function() {
     });
   })
 
+
+
+
   $('.faceDownCard').draggable(
   	{ 
   		axis : "y",
@@ -35,49 +110,18 @@ $(document).ready(function() {
         // be sure it's in Game Pile boundary
         
         // send topCard thru ajax - server will 'flip' to 'pile'
-        $.post("/turn", {action:"dropped"}, function(ajaxResponse) {
-          console.log('turn: ' + ajaxResponse.pile)
-          if (ajaxResponse.pile.substring(0,ajaxResponse.pile.length - 1) == '11') {
-            ajaxResponse.pile = 'J' + ajaxResponse.pile.substring(ajaxResponse.pile.length - 1,ajaxResponse.pile.length)
-          }
-          if (ajaxResponse.pile.substring(0,ajaxResponse.pile.length - 1) == '12') {
-            ajaxResponse.pile = 'Q' + ajaxResponse.pile.substring(ajaxResponse.pile.length - 1,ajaxResponse.pile.length)
-          }
-          if (ajaxResponse.pile.substring(0,ajaxResponse.pile.length - 1) == '13') {
-            ajaxResponse.pile = 'K' + ajaxResponse.pile.substring(ajaxResponse.pile.length - 1,ajaxResponse.pile.length)
-          }
-          if (ajaxResponse.pile.substring(0,ajaxResponse.pile.length - 1) == '1') {
-            ajaxResponse.pile = 'A' + ajaxResponse.pile.substring(ajaxResponse.pile.length - 1,ajaxResponse.pile.length)
-          }
-          if (ajaxResponse.pile.substring(0,ajaxResponse.pile.length - 1) == '14' ||
-              ajaxResponse.pile.substring(0,ajaxResponse.pile.length - 1) == '15') {
-            ajaxResponse.pile = 'J'
-          }
-
-          switch(ajaxResponse.pile.substring(ajaxResponse.pile.length - 1,ajaxResponse.pile.length))
-          {
-            case 'S':
-              ajaxResponse.pile = ajaxResponse.pile.substring(0,ajaxResponse.pile.length - 1) + '&spades;'
-              break
-            case 'H':
-              ajaxResponse.pile = ajaxResponse.pile.substring(0,ajaxResponse.pile.length - 1) + '&hearts;'
-              break
-            case 'C':
-              ajaxResponse.pile = ajaxResponse.pile.substring(0,ajaxResponse.pile.length - 1) + '&clubs;'
-              break
-            case 'D':
-              ajaxResponse.pile = ajaxResponse.pile.substring(0,ajaxResponse.pile.length - 1) + '&diams;'
-              break
-            // case 'J':
-            //   ajaxResponse.pile = '<strong>J</strong>'
-          }
+        $.post("/turn", {turn:"player"}, function(ajaxResponse) {
+          console.log('turn: ' + ajaxResponse.exposedCard)
+          
+          ajaxResponse.exposedCard = displayTopCard(ajaxResponse.exposedCard)
 
             //console.log(ajaxResponse.pile)
             $('.pile').css("background-color","#fdffdd");
-            $('.pileTop > p').html(ajaxResponse.pile);
-            $('.pileBottom > p').html(ajaxResponse.pile);
-            $('#gameLog').prepend('<p>Player flipped the ' + ajaxResponse.pile + '.')
+            $('.pileTop > p').html(ajaxResponse.exposedCard);
+            $('.pileBottom > p').html(ajaxResponse.exposedCard);
+            $('#gameLog').prepend('<p>Player flipped the ' + ajaxResponse.exposedCard + '.')
 
+            opponentsTurn(ajaxResponse.opponents)
 
           });
       } //end stop

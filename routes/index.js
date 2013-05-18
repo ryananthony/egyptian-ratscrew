@@ -18,7 +18,7 @@ fs.exists('./gamedata/game.json', function(exists) {
 			title: 'Ratscrew',
 			opponents: gameJsonBuffer.opponents,
 			name : gameJsonBuffer.player.name, 
-			pile : gameJsonBuffer.pile[0]
+			exposedCard : gameJsonBuffer.pile[0]
 		});
 	})
   } 
@@ -27,7 +27,7 @@ fs.exists('./gamedata/game.json', function(exists) {
 		res.render('index', { 
 			title: 'Ratscrew',
 			opponents: [],
-			pile: []
+			exposedCard: []
 		});
   }
 });
@@ -35,7 +35,7 @@ fs.exists('./gamedata/game.json', function(exists) {
 };
 
 exports.begin = function(req, res){
-	console.log('at route: ' + res.locals.opponents[0].name)
+	//console.log('at route: ' + res.locals.opponents[0].name)
 	var gameData = {}
 	gameData.opponents = res.locals.opponents
 	gameData.player = res.locals.player
@@ -51,6 +51,6 @@ exports.begin = function(req, res){
 	});
 
 	// conditional based on player name sent from jQuery
-	res.send({ name : gameData.player.name, pile : gameData.pile[0] }) //jquery now replaces value of card
+	res.send({ name : gameData.player.name, exposedCard : gameData.pile[0] }) //jquery now replaces value of card
 
 };

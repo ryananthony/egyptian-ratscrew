@@ -5,7 +5,6 @@
 
 var express = require('express')
   , routes = require('./routes')
-  , user = require('./routes/user')
   , turn = require('./routes/turn')
   , http = require('http')
   , fs = require('fs')
@@ -110,16 +109,15 @@ app.post('/', function(req,res,next) {
 
 
 app.post('/turn', function(req,res,next) {
-	if (req.body.action == 'dropped') {
-
+	console.log(req.body)
+	if (req.body.turn == 'opponent') {
+		res.locals.opponentName = req.body.name
 	}
 	res.locals.hand = req.body.hand
 	res.locals.pile = req.body.pile
 	next()
 }, turn.index);
 
-
-app.get('/users', user.list);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
