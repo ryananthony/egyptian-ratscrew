@@ -1,0 +1,71 @@
+extends layout
+
+block game
+	div#game
+		.ui-grid-d
+			.ui-block-a
+			.ui-block-b
+			.ui-block-c
+				if opponents[2]
+					div(id='#{opponents[2].name}')
+						p.opponent #{opponents[2].name}
+				else
+					p.opponent Empty Seat
+			.ui-block-d
+			.ui-block-e
+		.ui-grid-d
+			.ui-block-a
+			.ui-block-b
+				if opponents[1]
+					div(id='#{opponents[1].name}')
+						p.opponent #{opponents[1].name}
+				else
+					p.opponent Empty Seat
+			.ui-block-c
+				div#pileStatus
+					h2
+					- //JQUERY HERE
+			.ui-block-d
+				if opponents[3]
+					div(id='#{opponents[3].name}')
+						p.opponent #{opponents[3].name}
+				else
+					p.opponent Empty Seat
+			.ui-block-e
+		.ui-grid-d
+			.ui-block-a
+			.ui-block-b
+			.ui-block-c
+					- console.log('so the index refreshes')
+					.pile
+						.pileTop
+							p
+							- //JQUERY HERE																	
+						.pileBottom
+							p
+							- //JQUERY HERE
+			.ui-block-d
+			.ui-block-e
+		.ui-grid-d
+			.ui-block-a
+				if opponents[0]
+					div(id='#{opponents[0].name}')
+						p.opponent #{opponents[0].name}
+				else
+					p.opponent Empty Seat
+			.ui-block-b
+			.ui-block-c
+			.ui-block-d
+			.ui-block-e
+				if opponents[4]
+					div(id='#{opponents[4].name}')
+						p.opponent #{opponents[4].name}
+				else
+					p.opponent Empty Seat
+		.ui-grid-d
+			.ui-block-a
+			.ui-block-b
+			.ui-block-c
+				.faceDownCard
+			.ui-block-d
+			.ui-block-e
